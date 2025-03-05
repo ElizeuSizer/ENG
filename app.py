@@ -27,10 +27,13 @@ app.config['UPLOAD_FOLDER'] = os.path.join(app.root_path, 'uploads')
 if not os.path.exists(app.config['UPLOAD_FOLDER']):
     os.makedirs(app.config['UPLOAD_FOLDER'])
 
+os.environ["CUDA_VISIBLE_DEVICES"] = ""
+
 
 db.init_app(app)
 
-embedding_model = SentenceTransformer('paraphrase-multilingual-MiniLM-L12-v2')
+embedding_model = SentenceTransformer('paraphrase-multilingual-MiniLM-L12-v2', device='cpu')
+
 
 with open('data/faq.json', 'r', encoding='utf-8') as f:
     faqs = json.load(f)
