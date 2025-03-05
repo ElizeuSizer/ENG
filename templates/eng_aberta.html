@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+{% block content %}
+<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/eng_aberta.css') }}">
+
+<div class="eng-form-container">
+  <h2 class="form-title">Registro de ENG</h2>
+  
+  <form method="POST" action="{{ url_for('eng_aberta', requisicao_id=requisicao.id) }}" class="eng-form">
+    {{ form.hidden_tag() }}
+    
+    <div class="form-group">
+      <label for="observacao">Observação:</label>
+      {{ form.observacao(class="form-control", id="observacao", placeholder="Digite a observação...") }}
+    </div>
+    
+    <div class="form-group">
+      <label for="pr_number">Número da PR:</label>
+      {{ form.pr_number(class="form-control", id="pr_number", placeholder="Digite o número da PR...") }}
+    </div>
+    
+    <div class="form-actions">
+      <button type="submit" class="btn-primary">Registrar ENG</button>
+      <a href="{{ url_for('detalhe_requisicao', requisicao_id=requisicao.id) }}" class="btn-back">Cancelar</a>
+    </div>
+  </form>
+</div>
+{% endblock %}

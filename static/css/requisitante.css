@@ -1,0 +1,289 @@
+/* ======================
+   VARIÁVEIS GLOBAIS
+   ====================== */
+   :root {
+    --primary-color: #0075C9;
+    --primary-dark: #005fa3;
+    --secondary-color: #6c757d;
+    --secondary-dark: #5a6268;
+    --danger-color: #d9534f;
+    --danger-dark: #c9302c;
+    --success-color: #0b00aa;
+    --success-dark: #005c86;
+    --background-light: #f4f6f9;
+    --text-dark: #333;
+    --text-light: #555;
+    --border-radius: 6px;
+  }
+  
+  /* ESTILOS GERAIS */
+  body {
+    margin: 0;
+    font-family: "Inter", Arial, sans-serif;
+    font-size: 14px;
+    color: var(--text-dark);
+    background-color: var(--background-light);
+  }
+  
+  /* HEADER */
+  .dashboard-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: var(--primary-color);
+    padding: 6px 15px;
+    color: #fff;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+  }
+  .logo { height: 35px; }
+  .header-center { flex: 1; text-align: center; }
+  .header-center h2 { margin: 0; font-size: 16px; }
+  .header-right { position: relative; display: flex; align-items: center; }
+  
+  .profile-avatar {
+    width: 35px; height: 35px; border-radius: 50%;
+    background: #fff; border: 2px solid #fff;
+    cursor: pointer; transition: transform 0.2s;
+  }
+  .profile-avatar:hover { transform: scale(1.1); }
+  
+  .dropdown-menu {
+    display: none; position: absolute; top: 45px; right: 0;
+    background: #fff; border-radius: var(--border-radius);
+    box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+    width: 120px; padding: 8px; text-align: center;
+  }
+  .dropdown-menu .dropdown-item {
+    display: block; background: var(--danger-color);
+    color: #fff; border-radius: var(--border-radius);
+    text-decoration: none; font-size: 12px; font-weight: bold;
+    width: 90px; margin: auto; padding: 6px 10px;
+    transition: background 0.3s, transform 0.2s;
+  }
+  .dropdown-menu .dropdown-item:hover {
+    background: var(--danger-dark);
+    transform: translateY(-2px);
+  }
+  
+  /* DASHBOARD CONTAINER */
+  .dashboard-container {
+    max-width: 1100px;
+    margin: auto; padding: 15px;
+  }
+  .status-cards { display: flex; gap: 15px; margin-bottom: 25px; }
+  .card {
+    background: #fff; padding: 15px; border-radius: var(--border-radius);
+    box-shadow: 0 3px 6px rgba(0,0,0,0.1);
+    text-align: center; flex: 1;
+  }
+  .card h4 {
+    color: var(--primary-color);
+    margin-bottom: 5px; font-size: 16px;
+  }
+  .card p { font-size: 22px; font-weight: bold; }
+  
+  .search-container {
+    display: flex; gap: 10px; margin-bottom: 20px;
+    align-items: center; justify-content: flex-start;
+  }
+  .search-input {
+    width: 300px; padding: 10px 15px; font-size: 14px;
+    border: 1px solid var(--secondary-color);
+    border-radius: var(--border-radius);
+    transition: border-color 0.3s; box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  }
+  .search-input:focus {
+    outline: none; border-color: var(--primary-color);
+    box-shadow: 0 0 8px rgba(0,117,201,0.3);
+  }
+  .btn-search {
+    padding: 10px 20px; border: none; background: var(--primary-color);
+    color: #fff; border-radius: var(--border-radius);
+    cursor: pointer; font-size: 14px; transition: background 0.3s, transform 0.2s;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  }
+  .btn-search:hover {
+    background: var(--primary-dark);
+    transform: translateY(-2px);
+  }
+  
+  /* REQUISIÇÕES (LINHA ÚNICA, COLUNAS FIXAS) */
+  .requisition-grid {
+    display: flex; flex-direction: column; gap: 15px;
+  }
+  .requisition-card {
+    background: #fff; padding: 10px 15px; border-radius: var(--border-radius);
+    box-shadow: 0 3px 5px rgba(0,0,0,0.1);
+    display: flex; align-items: center; justify-content: space-between; gap: 10px;
+  }
+  .requisition-card span, .requisition-card p {
+    margin: 0; padding: 5px;
+    white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+  }
+  .req-id     { flex: 0 0 70px;  }  /* Aumentamos para caber "ID:" */
+  .req-desc   { flex: 1;         }
+  .req-valor  { flex: 0 0 80px;  text-align: center; }
+  .req-data   { flex: 0 0 80px;  text-align: center; }
+  .req-pr     { flex: 0 0 80px;  text-align: center; }
+  .req-pedido { flex: 0 0 120px; text-align: center; }
+  
+  /* Largura fixa p/ req-actions => evita desalinhamento */
+  .req-actions {
+    flex: 0 0 150px; /* fixo p/ caber "Detalhes", "Pedido", "NF" */
+    display: flex; gap: 5px; justify-content: flex-end;
+  }
+  
+  /* Cabeçalho fixo também */
+  .requisition-card.header-row {
+    background: #e9ecef; font-weight: bold; padding: 10px 15px;
+    display: flex; align-items: center; justify-content: space-between;
+  }
+  .header-row .req-id     { flex: 0 0 70px; }
+  .header-row .req-desc   { flex: 1;       }
+  .header-row .req-valor  { flex: 0 0 80px; text-align: center; }
+  .header-row .req-data   { flex: 0 0 80px; text-align: center; }
+  .header-row .req-pr     { flex: 0 0 80px; text-align: center; }
+  .header-row .req-pedido { flex: 0 0 120px; text-align: center; }
+  .header-row .req-actions { flex: 0 0 150px; }
+  
+  /* MODAL */
+  .modal {
+    display: none; position: fixed; z-index: 1000;
+    left: 0; top: 0; width: 100%; height: 100%;
+    background: rgba(0,0,0,0.6); backdrop-filter: blur(4px);
+    overflow-y: auto;
+  }
+  .modal-content {
+    background: #fff; margin: 5% auto; padding: 20px 25px;
+    border-radius: 10px; width: 90%; max-width: 500px;
+    position: relative; box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+    animation: fadeIn 0.3s ease-in-out;
+  }
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-10%); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  .modal .close {
+    position: absolute; top: 15px; right: 15px;
+    font-size: 26px; font-weight: bold; color: #333;
+    cursor: pointer;
+  }
+  .modal .close:hover {
+    color: var(--danger-color);
+  }
+  .modal h3 {
+    margin-top: 0; font-size: 18px; text-align: center;
+  }
+  .modal-pedido {
+    width: 320px; max-width: 95%;
+  }
+  .modal-nf {
+    width: 500px; max-width: 95%;
+  }
+  .modal input[type="text"],
+  .modal input[type="file"] {
+    width: 100%; padding: 8px; margin: 8px 0;
+    border: 1px solid #ccc; border-radius: 4px;
+  }
+  .modal-divider {
+    margin: 20px 0; border: none; border-top: 1px solid #ccc;
+  }
+  
+  /* LISTA DE NF (apenas nome + botões) */
+  .nf-item-row {
+    display: flex; align-items: center; justify-content: space-between;
+    margin-bottom: 10px; padding-bottom: 6px; border-bottom: 1px solid #eee;
+  }
+  .nf-filename {
+    max-width: 150px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+  }
+  .nf-actions {
+    display: inline-flex; gap: 5px; align-items: center;
+  }
+  .btn-download, .btn-excluir {
+    font-size: 10px; padding: 4px 6px; border-radius: 4px;
+    border: none; cursor: pointer; color: #fff;
+    text-decoration: none; display: inline-block;
+    transition: background 0.3s;
+  }
+  .btn-download {
+    background: var(--primary-color);
+  }
+  .btn-download:hover {
+    background: var(--primary-dark);
+  }
+  .btn-excluir {
+    background: var(--danger-color);
+  }
+  .btn-excluir:hover {
+    background: var(--danger-dark);
+  }
+  
+  /* BOTÕES GERAIS */
+  .btn {
+    display: inline-block; padding: 6px 12px; border-radius: var(--border-radius);
+    font-weight: 600; font-size: 12px; cursor: pointer; text-decoration: none;
+    transition: background 0.3s, transform 0.2s;
+  }
+  .btn-small {
+    padding: 4px 8px; font-size: 11px;
+  }
+  .btn-primary {
+    background: var(--primary-color);
+    color: #fff;
+  }
+  .btn-add {
+    background: var(--success-color);
+    color: #fff;
+  }
+  .btn-primary:hover, .btn-add:hover {
+    background: var(--primary-dark);
+    transform: translateY(-2px);
+  }
+  .btn-success {
+    background: var(--success-color);
+    color: #fff;
+  }
+  .btn-success:hover {
+    background: var(--success-dark);
+  }
+  .btn-cancel {
+    background: var(--danger-color);
+    color: #fff;
+  }
+  .btn-cancel:hover {
+    background: var(--danger-dark);
+  }
+  
+  /* RESPONSIVIDADE */
+  @media (max-width: 768px) {
+    .dashboard-header {
+      flex-direction: column; text-align: center;
+    }
+    .search-container { margin-bottom: 10px; }
+    .card h4 { font-size: 14px; }
+    .card p { font-size: 18px; }
+    .btn { font-size: 11px; padding: 5px 10px; }
+  
+    .req-id     { flex: 0 0 50px; }
+    .req-valor  { flex: 0 0 60px; }
+    .req-data   { flex: 0 0 60px; }
+    .req-pr     { flex: 0 0 60px; }
+    .req-pedido { flex: 0 0 90px; }
+    .req-actions { flex: 0 0 120px; }
+  }
+.requisition-card.header-row .req-id,
+.requisition-card.header-row .req-desc,
+.requisition-card.header-row .req-valor,
+.requisition-card.header-row .req-data,
+.requisition-card.header-row .req-pr,
+.requisition-card.header-row .req-pedido {
+  text-align: left;
+  margin-left: 10px;
+}
+.header-row .req-actions {
+  display: flex;
+  justify-content: center;
+}
+
+  

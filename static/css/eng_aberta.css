@@ -1,0 +1,177 @@
+/* Reset e Base */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
+  
+  body {
+    font-family: 'Roboto', sans-serif;
+    background: linear-gradient(135deg, #f0f2f5 0%, #d9e4f5 100%);
+    color: #333;
+    padding: 20px;
+  }
+  
+  /* Container do formulário */
+  .eng-form-container {
+    max-width: 600px;
+    margin: 50px auto;
+    background: #ffffff;
+    border-radius: 12px;
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.15);
+    padding: 40px;
+    position: relative;
+    overflow: hidden;
+    animation: slideIn 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94) both;
+  }
+  
+  /* Título com efeito */
+  .form-title {
+    text-align: center;
+    margin-bottom: 30px;
+    font-size: 32px;
+    color: #0075C9;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    position: relative;
+  }
+  
+  .form-title::after {
+    content: "";
+    display: block;
+    width: 80px;
+    height: 4px;
+    background: #0075C9;
+    margin: 8px auto 0;
+    border-radius: 2px;
+    animation: expandLine 0.5s ease-out forwards;
+  }
+  
+  /* Formulário */
+  .eng-form {
+    width: 100%;
+  }
+  
+  /* Grupos de formulário */
+  .form-group {
+    margin-bottom: 25px;
+    position: relative;
+    transition: all 0.3s ease;
+  }
+  
+  .form-group label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 500;
+    color: #555;
+    font-size: 14px;
+  }
+  
+  /* Campos de formulário */
+  .form-control {
+    width: 100%;
+    padding: 14px 16px;
+    font-size: 16px;
+    border: 2px solid #e0e0e0;
+    border-radius: 6px;
+    transition: border-color 0.3s, box-shadow 0.3s;
+  }
+  
+  .form-control:focus {
+    border-color: #0075C9;
+    box-shadow: 0 0 10px rgba(0, 117, 201, 0.2);
+    outline: none;
+  }
+  
+  /* Ações do formulário */
+  .form-actions {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 30px;
+  }
+  
+  /* Botão Registrar */
+  .btn-primary {
+    flex: 1;
+    padding: 14px 20px;
+    background: linear-gradient(90deg, #0075C9, #005fa3);
+    border: none;
+    border-radius: 6px;
+    color: #fff;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    transition: background 0.3s, transform 0.2s;
+    margin-right: 10px;
+  }
+  
+  .btn-primary:hover {
+    background: linear-gradient(90deg, #005fa3, #004a80);
+    transform: translateY(-2px);
+  }
+  
+  /* Botão Cancelar/Voltar */
+  .btn-back {
+    flex: 1;
+    text-align: center;
+    padding: 14px 20px;
+    background: #e0e0e0;
+    border: none;
+    border-radius: 6px;
+    color: #333;
+    font-size: 16px;
+    font-weight: 600;
+    text-decoration: none;
+    cursor: pointer;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    transition: background 0.3s, transform 0.2s;
+  }
+  
+  .btn-back:hover {
+    background: #d0d0d0;
+    transform: translateY(-2px);
+  }
+  
+  /* Animações */
+  @keyframes slideIn {
+    from {
+      opacity: 0;
+      transform: translateY(40px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  
+  @keyframes expandLine {
+    from {
+      width: 0;
+    }
+    to {
+      width: 80px;
+    }
+  }
+  
+  /* Responsividade */
+  @media (max-width: 600px) {
+    .eng-form-container {
+      margin: 30px 10px;
+      padding: 30px 20px;
+    }
+    
+    .form-title {
+      font-size: 28px;
+    }
+    
+    .btn-primary,
+    .btn-back {
+      font-size: 14px;
+      padding: 12px 16px;
+    }
+  }
+  

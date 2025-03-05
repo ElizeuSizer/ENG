@@ -1,0 +1,108 @@
+{% block head %}
+  <!-- Inclua o CSS específico para os detalhes -->
+  <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/detalhe_requisicao.css') }}">
+  
+  <div class="details-container">
+    <h2>Detalhes da Requisição</h2>
+    <div class="card">
+      <!-- Linhas de informações da requisição -->
+      <div class="card-section">
+        <div class="card-item">
+          <span class="label">ID:</span>
+          <span class="value">{{ requisicao.id }}</span>
+        </div>
+        <div class="card-item">
+          <span class="label">Descrição:</span>
+          <span class="value">{{ requisicao.descricao }}</span>
+        </div>
+        <div class="card-item">
+          <span class="label">Solicitante:</span>
+          <span class="value">{{ requisicao.solicitante.username }}</span>
+        </div>
+        <div class="card-item">
+          <span class="label">Planta:</span>
+          <span class="value">{{ requisicao.planta }}</span>
+        </div>
+      </div>
+      <!-- Outras seções (Projeto, Local etc.) -->
+      <div class="card-section">
+        <div class="card-item">
+          <span class="label">Projeto:</span>
+          <span class="value">{{ requisicao.projeto }}</span>
+        </div>
+        <div class="card-item">
+          <span class="label">Pertence ao processo?</span>
+          <span class="value">{{ requisicao.pertence_processo_produtivo }}</span>
+        </div>
+        <div class="card-item">
+          <span class="label">Local da Fábrica:</span>
+          <span class="value">{{ requisicao.local_fabrica }}</span>
+        </div>
+        <div class="card-item">
+          <span class="label">Local Específico:</span>
+          <span class="value">{{ requisicao.local_especifico }}</span>
+        </div>
+      </div>
+      <div class="card-section">
+        <div class="card-item">
+          <span class="label">Aplicabilidade:</span>
+          <span class="value">{{ requisicao.aplicabilidade }}</span>
+        </div>
+        <div class="card-item">
+          <span class="label">Valor:</span>
+          <span class="value">{{ requisicao.valor }}</span>
+        </div>
+        <div class="card-item">
+          <span class="label">Data de Criação:</span>
+          <span class="value">{{ requisicao.data_criacao.strftime('%d/%m/%Y %H:%M') }}</span>
+        </div>
+      </div>
+
+      <!-- Seção de ENG (exibe detalhes se já estiver aberta) -->
+      <div class="eng-section">
+        {% if requisicao.eng_aberta %}
+          <div class="eng-details">
+            <div class="card-item">
+              <span class="label">ENG registrada em:</span>
+              <span class="value">{{ requisicao.data_eng_aberta.strftime('%d/%m/%Y %H:%M') }}</span>
+            </div>
+            <div class="card-item">
+              <span class="label">Observação:</span>
+              <span class="value">{{ requisicao.eng_observacao }}</span>
+            </div>
+            <div class="card-item">
+              <span class="label">Número da PR:</span>
+              <span class="value">{{ requisicao.pr_number }}</span>
+            </div>
+          </div>
+        {% endif %}
+      </div>
+
+      <!-- Contêiner de Botões de Ação -->
+      <div class="action-buttons">
+        {% if requisicao.status != "Rejeitado" %}
+          <a href="{{ url_for('rejeitar_requisicao', requisicao_id=requisicao.id) }}" class="btn-reject">Rejeitar</a>
+        {% endif %}
+        {% if not requisicao.eng_aberta and requisicao.status != "Rejeitado" %}
+          <a href="{{ url_for('eng_aberta', requisicao_id=requisicao.id) }}" class="btn-eng">ENG Aberta</a>
+        {% endif %}
+      </div>
+
+      <!-- Seção de Anexos -->
+      <div class="anexos-section">
+        <h3>Anexos</h3>
+        {% if requisicao.anexos %}
+          <ul class="anexos-list">
+            {% for anexo in requisicao.anexos %}
+              <li><a href="{{ url_for('download_attachment', anexo_id=anexo.id) }}">{{ anexo.filename }}</a></li>
+            {% endfor %}
+          </ul>
+        {% else %}
+          <p>Nenhum anexo encontrado.</p>
+        {% endif %}
+      </div>
+    </div>
+    <!-- Botão Voltar -->
+    <a href="{{ url_for('requisitante_dashboard') }}" class="btn-back">Voltar</a>
+  </div>
+{% endblock %}

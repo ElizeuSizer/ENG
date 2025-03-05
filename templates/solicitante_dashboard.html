@@ -1,0 +1,385 @@
+{% block content %}
+
+<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/solicitante.css') }}">
+<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/modal.css') }}">
+<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/modalchat.css') }}">
+
+<div class="header">
+  <img src="{{ url_for('static', filename='logo.png') }}" alt="Logo" class="logo">
+  {% set first_word = user.username.split()[0] %}
+  <div class="profile-container">
+    <div class="profile-avatar" onclick="toggleDropdown()">
+      {{ first_word[0] }}{{ first_word[-1] }}
+    </div>
+    <div id="dropdownMenu" class="dropdown-menu">
+      <a href="{{ url_for('logout') }}" class="dropdown-item">Sair</a>
+      <a href="#" class="dropdown-item" onclick="openSignatureModal()">Assinatura</a>
+    </div>
+  </div>
+</div>
+
+<div id="chatModal" class="modal">
+  <div class="modal-content" style="max-width:600px; display: flex; flex-direction: column;">
+    <span class="close" onclick="closeChatModal()">&times;</span>
+    
+    <div id="chatbox" style="display: flex; flex-direction: column; flex: 1;">
+      <header>
+        <img src="{{ url_for('static', filename='logo.png') }}" alt="Danone Logo" class="chat-logo">
+        <h1>Suporte Engenharia</h1>
+      </header>
+      
+      <!-- IMPORTANTE: flex: 1 e overflow-y: auto para permitir a rolagem -->
+      <div id="messages" style="flex: 1; overflow-y: auto;"></div>
+      
+      <form id="chat-form">
+        <input type="text" name="message" id="message-input" placeholder="Digite sua pergunta..." required>
+        <button type="submit">Enviar</button>
+      </form>
+      
+      <div style="text-align: center; margin-top: 10px;">
+        <button class="btn-secondary" onclick="closeChatModal()">Voltar</button>
+      </div>
+    </div>
+    
+  </div>
+</div>
+
+
+<!-- Modal de Assinatura (já existente) -->
+<div id="signatureModal" class="modalofc">
+  <div class="modal-contentofc">
+    <span class="close" onclick="closeSignatureModal()">&times;</span>
+    <h3>Assine abaixo</h3>
+    <!-- Exibe a assinatura atual -->
+    <div id="currentSignatureContainer" style="margin-bottom:10px;">
+      <h4>Assinatura Atual</h4>
+      <img id="currentSignature" src="{{ url_for('ver_assinatura', user_id=user.id) }}" alt="Assinatura atual" style="max-width:100%; border:1px solid #ccc;"
+           onerror="this.style.display='none'; document.getElementById('currentSignatureContainer').innerHTML='<p>Nenhuma assinatura salva.</p>'; ">
+    </div>
+    <!-- Canvas para nova assinatura -->
+    <canvas id="signaturePad" width="400" height="200" style="border:1px solid #ccc;"></canvas>
+    <div style="margin-top:10px;">
+      <button type="button" onclick="clearSignature()">Limpar</button>
+      <button type="button" onclick="saveSignature()">Salvar Assinatura</button>
+    </div>
+  </div>
+</div>
+
+
+<!-- Resto do dashboard do solicitante -->
+<div class="main-container">
+  <h2>Área do Solicitante</h2>
+  <p>Bem-vindo(a), {{ user.username }}!</p>
+  <button onclick="openModal()" class="btn-primary">Abrir Requisição</button>
+  <!-- Modal de Requisição (conforme já existente) -->
+  <div id="modal" class="modalofc">
+    <div class="modal-contentofc">
+      <span class="close" onclick="closeModal()">&times;</span>
+      <h3 class="modal-title">Escrever uma solicitação</h3>
+      <form method="POST" enctype="multipart/form-data">
+        {{ form.hidden_tag() }}
+        <div class="form-container">
+          <!-- Primeira coluna -->
+          <div class="form-column">
+            <div class="form-group">
+              <label class="required">{{ form.descricao.label }}</label>
+              {{ form.descricao(class="input-field full-width", placeholder="Descreva a solicitação...") }}
+            </div>
+            <div class="form-group">
+              <label class="required">{{ form.requisitante.label }}</label>
+              {{ form.requisitante(class="input-field") }}
+            </div>
+            <div class="form-group">
+              <label class="required">{{ form.planta.label }}</label>
+              {{ form.planta(class="input-field small-width", id="planta", onchange="updateLocalFabrica()") }}
+            </div>
+            <div class="form-group">
+              <label class="required">{{ form.local_fabrica.label }}</label>
+              {{ form.local_fabrica(class="input-field", id="local_fabrica") }}
+            </div>
+          </div>
+          <!-- Segunda coluna -->
+          <div class="form-column">
+            <div class="form-group">
+              <label class="required">{{ form.projeto.label }}</label>
+              {{ form.projeto(class="input-field", id="projeto") }}
+            </div>
+            <div class="form-group">
+              <label class="required">{{ form.pertence_processo_produtivo.label }}</label>
+              {{ form.pertence_processo_produtivo(class="input-field small-width") }}
+            </div>
+            <div class="form-group">
+              <label class="required">{{ form.local_especifico.label }}</label>
+              {{ form.local_especifico(class="input-field", placeholder="Descreva o local...") }}
+            </div>
+            <div class="form-group">
+              <label class="required">{{ form.aplicabilidade.label }}</label>
+              {{ form.aplicabilidade(class="input-field", placeholder="Função do bem...") }}
+            </div>
+            <div class="form-group">
+              <label>{{ form.valor.label }}</label>
+              <div class="currency-input">
+                <span class="currency-symbol">R$</span>
+                {{ form.valor(class="input-field", id="valor_input", placeholder="Valor da proposta...") }}
+                <select name="moeda" class="currency-select" onchange="updateCurrencySymbol()">
+                  <option value="BRL" data-symbol="R$" selected>BRL</option>
+                  <option value="USD" data-symbol="$">USD</option>
+                  <option value="EUR" data-symbol="€">EUR</option>
+                </select>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-group file-group">
+          <label>Anexos:</label>
+          <div id="file-inputs">
+            <input type="file" name="attachments[]" class="file-upload">
+          </div>
+          <button type="button" class="btn-add-file" onclick="addFileInput()">Adicionar mais arquivos</button>
+          <ul id="file-list"></ul>
+        </div>
+        
+        <div class="form-actions">
+          <button type="submit" class="btn-success">Enviar Requisição</button>
+          <button type="button" class="btn-cancel" onclick="closeModal()">Cancelar</button>
+        </div>
+      </form>
+    </div>
+  </div>
+  <a href="{{ url_for('minhas_requisicoes') }}">
+    <button class="btn-primary">Minhas Requisições</button>
+  </a>
+  <button class="btn-secondary" onclick="openChatModal()">Dúvida?</button>
+</div>
+
+<!-- Scripts para atualização dinâmica dos campos (Projeto e Local da Fábrica) -->
+<script>
+  const projetosSN = JSON.parse('{{ projetos_sn|tojson|safe }}');
+  const projetosEDP = JSON.parse('{{ projetos_edp|tojson|safe }}');
+  const locaisSN = JSON.parse('{{ locais_sn|tojson|safe }}');
+  const locaisEDP = JSON.parse('{{ locais_edp|tojson|safe }}');
+
+  document.getElementById('planta').addEventListener('change', function() {
+    const plantValue = this.value.trim().toUpperCase();
+    
+    // Atualizar o campo Projeto
+    const projetoSelect = document.getElementById('projeto');
+    projetoSelect.innerHTML = '';
+    let projetos = (plantValue === 'EDP') ? projetosEDP : (plantValue === 'SN') ? projetosSN : [];
+    const defaultOptionProj = document.createElement('option');
+    defaultOptionProj.value = '';
+    defaultOptionProj.textContent = 'Selecione o projeto';
+    projetoSelect.appendChild(defaultOptionProj);
+    projetos.forEach(function(proj) {
+      const opt = document.createElement('option');
+      opt.value = proj;
+      opt.textContent = proj;
+      projetoSelect.appendChild(opt);
+    });
+    
+    // Atualizar o campo Local da Fábrica
+    const localSelect = document.getElementById('local_fabrica');
+    localSelect.innerHTML = '';
+    let locais = (plantValue === 'EDP') ? locaisEDP : (plantValue === 'SN') ? locaisSN : [];
+    const defaultOptionLocal = document.createElement('option');
+    defaultOptionLocal.value = '';
+    defaultOptionLocal.textContent = 'Selecione o local da fábrica';
+    localSelect.appendChild(defaultOptionLocal);
+    locais.forEach(function(loc) {
+      const opt = document.createElement('option');
+      opt.value = loc;
+      opt.textContent = loc;
+      localSelect.appendChild(opt);
+    });
+  });
+</script>
+
+<!-- Scripts existentes -->
+<script src="{{ url_for('static', filename='js/sol.js') }}"></script>
+
+<!-- Scripts dos modais e funcionalidades -->
+<script>
+  // Modal de Requisição
+  function openModal() {
+    document.getElementById('modal').style.display = 'block';
+  }
+  function closeModal() {
+    document.getElementById('modal').style.display = 'none';
+  }
+  // Modal de Chat (Suporte)
+  function openChatModal() {
+    document.getElementById('chatModal').style.display = 'block';
+  }
+  function closeChatModal() {
+    document.getElementById('chatModal').style.display = 'none';
+  }
+  // Modal de Assinatura
+  function openSignatureModal() {
+    document.getElementById('signatureModal').style.display = 'block';
+  }
+  function closeSignatureModal() {
+    document.getElementById('signatureModal').style.display = 'none';
+  }
+  // Dropdown do avatar
+  function toggleDropdown() {
+    var dropdown = document.getElementById('dropdownMenu');
+    dropdown.style.display = (dropdown.style.display === 'block') ? 'none' : 'block';
+  }
+  // Fechar modais ao clicar fora do conteúdo
+  window.onclick = function(event) {
+    var modal = document.getElementById('modal');
+    var chatModal = document.getElementById('chatModal');
+    var sigModal = document.getElementById('signatureModal');
+    if (event.target === modal) { modal.style.display = 'none'; }
+    if (event.target === chatModal) { chatModal.style.display = 'none'; }
+    if (event.target === sigModal) { sigModal.style.display = 'none'; }
+  }
+
+  // Função para o envio do chat
+  const chatForm = document.getElementById('chat-form');
+  const messagesDiv = document.getElementById('messages');
+  chatForm.addEventListener('submit', function(e) {
+    e.preventDefault();
+    const messageInput = document.getElementById('message-input');
+    const userMessage = messageInput.value;
+    
+    // Exibe a mensagem do usuário
+    const userDiv = document.createElement('div');
+    userDiv.classList.add('message', 'user');
+    userDiv.textContent = userMessage;
+    messagesDiv.appendChild(userDiv);
+    messageInput.value = '';
+    messagesDiv.scrollTo({
+      top: messagesDiv.scrollHeight,
+      behavior: 'smooth'
+    });
+    
+    // Envia a mensagem para o endpoint /chat
+    fetch('/chat', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+      body: 'message=' + encodeURIComponent(userMessage)
+    })
+    .then(response => response.json())
+    .then(data => {
+      const botDiv = document.createElement('div');
+      botDiv.classList.add('message', 'bot');
+      botDiv.innerHTML = data.answer.replace(/\n/g, "<br>");
+      messagesDiv.appendChild(botDiv);
+      messagesDiv.scrollTop = messagesDiv.scrollHeight;
+    });
+  });
+</script>
+
+<!-- Scripts para formatação monetária -->
+<script>
+  function formatNumberWithDots(value) {
+    let parts = value.split(',');
+    let integerPart = parts[0].replace(/[^0-9]/g, '');
+    let formattedInteger = integerPart.replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+    let formattedValue = formattedInteger;
+    if (parts.length > 1) {
+      let decimalPart = parts[1].replace(/[^0-9]/g, '');
+      formattedValue += ',' + decimalPart;
+    }
+    return formattedValue;
+  }
+  function updateCurrencySymbol() {
+    const select = document.querySelector('.currency-select');
+    const newSymbol = select.options[select.selectedIndex].getAttribute('data-symbol');
+    const inputField = document.querySelector('.currency-input .input-field');
+    let numericPart = inputField.value.replace(/[^0-9,]/g, '');
+    let formatted = formatNumberWithDots(numericPart);
+    inputField.value = newSymbol + formatted;
+    const symbolSpan = document.querySelector('.currency-symbol');
+    if (symbolSpan) { symbolSpan.textContent = newSymbol; }
+  }
+  function addCurrencyPrefix(e) {
+    const select = document.querySelector('.currency-select');
+    const symbol = select.options[select.selectedIndex].getAttribute('data-symbol');
+    let currentValue = e.target.value;
+    let numericPart = currentValue.replace(/[^0-9,]/g, '');
+    let formatted = formatNumberWithDots(numericPart);
+    e.target.value = symbol + formatted;
+  }
+  document.addEventListener('DOMContentLoaded', function() {
+    const valorInput = document.querySelector('.currency-input .input-field');
+    if (valorInput) {
+      valorInput.addEventListener('input', addCurrencyPrefix);
+      valorInput.addEventListener('keydown', function(e) {
+        if (e.key === '.') { e.preventDefault(); }
+      });
+    }
+  });
+</script>
+
+<!-- Script para assinatura -->
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    const salvarAssinaturaUrl = "{{ url_for('salvar_assinatura') }}";
+    const csrfToken = "{{ csrf_token }}";
+    const canvas = document.getElementById('signaturePad');
+    if (!canvas) { console.error("Canvas de assinatura não encontrado!"); return; }
+    const ctx = canvas.getContext('2d');
+    let drawing = false;
+    ctx.strokeStyle = "#000";
+    ctx.lineWidth = 2;
+    canvas.addEventListener('mousedown', function(e) {
+      drawing = true;
+      ctx.beginPath();
+      ctx.moveTo(e.offsetX, e.offsetY);
+    });
+    canvas.addEventListener('mousemove', function(e) {
+      if (drawing) {
+        ctx.lineTo(e.offsetX, e.offsetY);
+        ctx.stroke();
+      }
+    });
+    canvas.addEventListener('mouseup', function(e) { drawing = false; });
+    canvas.addEventListener('mouseout', function(e) { drawing = false; });
+    function clearSignature() { ctx.clearRect(0, 0, canvas.width, canvas.height); }
+    function openSignatureModal() {
+      const modal = document.getElementById('signatureModal');
+      if (modal) { modal.style.display = 'block'; }
+    }
+    function closeSignatureModal() {
+      const modal = document.getElementById('signatureModal');
+      if (modal) { modal.style.display = 'none'; }
+    }
+    function saveSignature() {
+      let dataURL = canvas.toDataURL('image/png');
+      let base64Data = dataURL.split(',')[1];
+      fetch(salvarAssinaturaUrl, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "X-CSRFToken": csrfToken
+        },
+        body: JSON.stringify({ signature: base64Data })
+      })
+      .then(response => response.json())
+      .then(data => {
+        if (data.success) {
+          alert("Assinatura salva com sucesso!");
+          closeSignatureModal();
+          clearSignature();
+          let currentSignature = document.getElementById('currentSignature');
+          if (currentSignature) {
+            currentSignature.src = "{{ url_for('ver_assinatura', user_id=user.id) }}" + "?t=" + new Date().getTime();
+          }
+        } else {
+          alert("Erro ao salvar assinatura: " + data.message);
+        }
+      })
+      .catch(error => console.error("Erro:", error));
+    }
+    window.openSignatureModal = openSignatureModal;
+    window.closeSignatureModal = closeSignatureModal;
+    window.clearSignature = clearSignature;
+    window.saveSignature = saveSignature;
+  });
+</script>
+
+{% endblock %}
+

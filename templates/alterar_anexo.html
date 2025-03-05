@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+{% block content %}
+<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/alterar_anexo.css') }}">
+
+<!-- Loading overlay (fora do container para cobrir toda a tela) -->
+<div id="loading" class="loading-overlay">
+  <div class="spinner"></div>
+</div>
+
+<div class="alterar-anexo-container">
+  <h2>Alterar Anexo - Requisição {{ requisicao.id }}</h2>
+  <form method="POST" enctype="multipart/form-data">
+    <!-- Campo de comentário -->
+    <div class="form-group">
+      <label for="comentario">Comentário:</label>
+      <textarea name="comentario" id="comentario" placeholder="Escreva um comentário..." required></textarea>
+    </div>
+    
+    <!-- Grupo de arquivos para upload -->
+    <div class="form-group file-group">
+      <label>Anexos:</label>
+      <div id="file-inputs">
+        <input type="file" name="attachments[]" class="file-upload">
+      </div>
+      <button type="button" class="btn-add-file" onclick="addFileInput()">Adicionar mais arquivos</button>
+      <ul id="file-list"></ul>
+    </div>
+    
+    <!-- Botões de ação -->
+    <div class="form-actions">
+      <button type="submit" class="btn-primary">Atualizar Anexo</button>
+      <a href="{{ url_for('minhas_requisicoes') }}" class="btn-back">Cancelar</a>
+    </div>
+  </form>
+</div>
+
+<script>
+  window.addEventListener('load', function() {
+    const loadingOverlay = document.getElementById('loading');
+    if (loadingOverlay) {
+      loadingOverlay.style.display = 'none';
+    }
+  });
+</script>
+
+<script src="{{ url_for('static', filename='js/file_upload.js') }}"></script>
+{% endblock %}

@@ -1,0 +1,231 @@
+[
+    {
+      "input": "O que é uma ENG?",
+      "response": "A ENG é um código interno da Engenharia usado para identificar e organizar cada solicitação de compra ou cotação. Em outras palavras, é o “número de controle” que ajuda a rastrear o processo antes da criação de uma PR."
+    },
+    {
+      "input": "Qual o significado de ENG?",
+      "response": "ENG significa que se trata de um número de controle exclusivo que identifica as solicitações internas de Engenharia, ocorrendo antes da criação de uma PR (Pedido de Requisição)."
+    },
+    {
+      "input": "ENG?",
+      "response": "Sim! Quando falamos de ENG, estamos nos referindo a um número de controle que identifica as solicitações internas na área de Engenharia, garantindo que tudo seja devidamente registrado antes de virar uma PR."
+    },
+    {
+      "input": "Pode me explicar o que é ENG?",
+      "response": "Claro! A ENG funciona como um “rótulo” para acompanhar cada solicitação interna na Engenharia. Ela organiza e controla o processo antes de avançar para a criação de uma PR."
+    },
+    {
+      "input": "O que é uma requisição?",
+      "response": "Uma requisição é um pedido formal para adquirir um produto ou contratar um serviço. Esse pedido passa por análises e aprovações dos setores responsáveis, garantindo que todos os critérios sejam cumpridos antes da execução."
+    },
+    {
+      "input": "O que é uma PR?",
+      "response": "A PR (Pedido de Requisição) é o documento formal que surge após a requisição, oficializando o pedido para aquisição ou contratação e passando por etapas de análise e aprovação."
+    },
+    {
+      "input": "Explique a requisição",
+      "response": "A requisição é o primeiro passo formal para iniciar uma compra ou contratação. Ela registra o pedido, que depois é analisado e aprovado pelos setores responsáveis, garantindo transparência e controle no processo."
+    },
+    {
+      "input": "Como funciona uma requisição?",
+      "response": "Ao submeter uma requisição, o pedido é avaliado por setores como IOPC e C&P. Após a aprovação, ele é convertido em uma PR, seguindo então para a execução do serviço ou compra do produto."
+    },
+    {
+      "input": "Como abro uma ENG?",
+      "response": "Para abrir uma ENG, siga estes passos:\n- Clique no botão <b>\"Abrir Requisição\"</b>.\n- Preencha os campos: Descrição, Requisitante, Planta, Local da fábrica (Centro de custo), Projeto, Pertence ao processo produtivo?, Local exato para compra, Função de bem e Valor.\n- Anexe os arquivos necessários e envie o formulário. O requisitante responsável continuará o processo."
+    },
+    {
+      "input": "Estou selecionando projeto local de fábrica e não aparece nada",
+      "response": "Verifique se você selecionou uma das opções de fábrica: <b>SN</b> ou <b>EDP</b>. Apenas assim as opções de projeto local serão exibidas."
+    },
+    {
+      "input": "Quais são os passos para iniciar uma ENG?",
+      "response": "Os passos são simples:\n1. Acesse o sistema.\n2. Clique em <b>\"Abrir ENG\"</b>.\n3. Preencha todos os campos obrigatórios.\n4. Envie o pedido para análise e aprovação."
+    },
+    {
+      "input": "O que é um Pedio?",
+      "response": "Pedio é a abreviação para Pedido de Compra. Ele formaliza os acordos entre a Danone e o fornecedor, incluindo quantidades, preços, prazos de pagamento e entrega, além dos dados do fornecedor e as condições de contratação."
+    },
+    {
+      "input": "O que é um PO?",
+      "response": "PO também se refere ao Pedido de Compra, que formaliza os acordos entre a Danone e o fornecedor, detalhando quantidades, preços, prazos e demais condições."
+    },
+    {
+      "input": "PO?",
+      "response": "Exato! PO significa Pedido de Compra, onde são registradas todas as informações essenciais dos acordos com o fornecedor, como quantidades, preços, prazos e condições de contratação."
+    },
+    {
+      "input": "Recebi uma NF o que faço?",
+      "response": "Se você é o responsável pelo pedido, encaminhe a Nota Fiscal (NF) para o requisitante que abriu a ENG, juntamente com sua aprovação. Se não for o responsável, apenas encaminhe para o requisitante."
+    },
+    {
+      "input": "Recebi uma Nota Fiscal o que faço?",
+      "response": "Caso você seja o responsável pelo pedido, envie a Nota Fiscal (NF) com sua aprovação para o requisitante que iniciou a ENG. Se não for o responsável, apenas encaminhe a NF para o requisitante."
+    },
+    {
+      "input": "quem pode ser o requisitante?",
+      "response": "Normalmente, o requisitante é o auxiliar administrativo da Engenharia. Atualmente, os responsáveis são: <b>Julio Silva</b> (para EDP) e <b>Elizeu Junior</b> (para SN)."
+    },
+    {
+      "input": "Bom dia",
+      "response": "Bom dia! Como posso ajudar você hoje?"
+    },
+    {
+      "input": "Boa tarde",
+      "response": "Boa tarde! Em que posso ajudar nesta bela tarde?"
+    },
+    {
+      "input": "Boa noite",
+      "response": "Boa noite! Como posso ser útil para você?"
+    },
+    {
+      "input": "Olá",
+      "response": "Olá! Como posso ajudar?"
+    },
+    {
+      "input": "Saudações",
+      "response": "Saudações! Como posso colaborar com sua solicitação hoje?"
+    },
+    {
+      "input": "Olá, tudo bem?",
+      "response": "Olá! Estou ótimo, obrigado. E você? Em que posso ajudar?"
+    },
+    {
+      "input": "Como vai?",
+      "response": "Estou bem, obrigado por perguntar! Como posso ajudar você hoje?"
+    },
+    {
+      "input": "E aí, tudo certo?",
+      "response": "Tudo certo! Qual dúvida posso esclarecer para você?"
+    },
+    {
+      "input": "Bom dia, equipe",
+      "response": "Bom dia, equipe! Em que posso contribuir hoje?"
+    },
+    {
+      "input": "Boa tarde, pessoal",
+      "response": "Boa tarde, pessoal! Estou à disposição para esclarecer suas dúvidas."
+    },
+    {
+      "input": "Boa noite a todos",
+      "response": "Boa noite, pessoal! Como posso ajudar nesta noite?"
+    },
+    {
+      "input": "Oi, bom dia",
+      "response": "Bom dia! Estou aqui para ajudar no que for necessário."
+    },
+    {
+      "input": "Oi, boa tarde",
+      "response": "Boa tarde! Conte comigo para o que precisar."
+    },
+    {
+      "input": "Oi, boa noite",
+      "response": "Boa noite! Como posso ajudar você hoje?"
+    },
+    {
+      "input": "Tudo bem?",
+      "response": "Tudo ótimo, obrigado! E com você? Como posso ajudar?"
+    },
+    {
+      "input": "Como você está?",
+      "response": "Estou bem, obrigado! Diga-me, qual é a sua dúvida hoje?"
+    },
+    {
+      "input": "Olá, como vai você?",
+      "response": "Olá! Estou à disposição para ajudar. Em que posso contribuir hoje?"
+    },
+    {
+      "input": "Saudações cordiais",
+      "response": "Saudações cordiais! Estou aqui para atender à sua solicitação."
+    },
+    {
+      "input": "Oi, preciso de ajuda",
+      "response": "Claro, estou aqui para ajudar. Por favor, explique sua dúvida para que possamos encontrar a melhor solução."
+    },
+    {
+      "input": "Qual seu nome?",
+      "response": "Meu nome é <b>Engenhar.IA</b>."
+    },
+    {
+      "input": "O que é C&P?",
+      "response": "C&P é o Departamento de Compras da Danone, responsável por gerenciar as aquisições e contratos."
+    },
+    {
+      "input": "Como anexo mais de uma proposta?",
+      "response": "Para anexar várias propostas, clique em <b>\"Adicionar mais anexos\"</b>. Surgirão novos botões <b>\"Escolher Arquivo\"</b> onde você poderá selecionar cada arquivo separadamente."
+    },
+    {
+        "input": "o que vem apos a eng?",
+        "response": "Junto com a ENG é aberto a Requisição (PR) após passar tudo será aberto o Pedido de compras (PO)"
+    },
+    {
+        "input": "o que vem apos a requisicao PR pr?",
+        "response": "Após a PR vem o Pedido de Compras (PO), assim poderá seguir com o fornecimento do serviço/material"
+    },
+    {
+      "input": "Como anexo 1 2 3 4 5 6 proposta?",
+      "response": "O processo é o mesmo: clique em <b>\"Adicionar mais anexos\"</b> e, em cada botão que aparecer, escolha um arquivo diferente para anexar suas propostas."
+    },
+    {
+      "input": "O que é CAPEX (Capital Expenditure)?",
+      "response": "CAPEX é o investimento em ativos fixos que agregam valor à Danone. Trata-se do capital destinado à aquisição ou melhoria de bens com impacto a longo prazo."
+    },
+    {
+      "input": "O que é EDITAL",
+      "response": "Um EDITAL é um documento que orienta os participantes de um processo de concorrência, detalhando os requisitos técnicos e comerciais para a elaboração das propostas técnica e comercial."
+    },
+    {
+      "input": "O que é FORMULÁRIO DE EXCEÇÃO?",
+      "response": "O formulário de exceção é utilizado para aprovar exceções ao procedimento de Seleção e Contratação de fornecedores de CAPEX. Ele deve ser preenchido para justificar tecnicamente, em casos de urgência ou para regularizar processos."
+    },
+    {
+      "input": "O que é GR (Goods Receipt)?",
+      "response": "GR é a confirmação eletrônica de que as mercadorias ou serviços foram entregues e recebidos. Essa confirmação pode ser completa ou parcial e, com o Onebuy, envolve etapas tanto pelo requisitante quanto pelo SAP (via P2P)."
+    },
+    {
+      "input": "O que é IOPC (Indirect Operational Procurement Center)?",
+      "response": "IOPC é a equipe responsável por gerenciar as informações dos sistemas de Compras, cuidando da geração dos pedidos, cadastros e autorizações necessárias."
+    },
+    {
+      "input": "O que é MIGO?",
+      "response": "MIGO é a etapa de reconhecimento da recepção da mercadoria ou serviço no destino. Dependendo do processo, ele pode movimentar o estoque ou apenas registrar a entrada."
+    },
+    {
+      "input": "O que é MIRO?",
+      "response": "MIRO é a fase em que a Nota Fiscal é registrada no SAP. Essa etapa alimenta os livros fiscais, contábeis, contas a pagar e controla os custos, sendo a última fase da entrada da NF."
+    },
+    {
+      "input": "O que é Gestor de pasta?",
+      "response": "O Gestor de Pasta é o responsável por administrar os pedidos de investimentos alocados em cada pasta. As requisições devem estar previamente alinhadas com o gestor da respectiva pasta."
+    },
+    {
+      "input": "Como funciona valor para abrir ENG?",
+      "response": "A quantidade de propostas necessárias para abrir uma ENG varia conforme o valor da compra:\n- <b>Até R$40.000:</b> 1 proposta\n- <b>De R$40.000,01 até R$150.000:</b> 2 propostas\n- <b>Acima de R$150.000,01:</b> 3 propostas\n*(Exceto para fornecedores com JT)*"
+    },
+    {
+      "input": "Como cadastro minha assinatura?",
+      "response": "Para cadastrar sua assinatura, clique no canto superior direito do sistema e selecione <b>\"Assinatura\"</b>. Faça sua assinatura, insira-a e pronto! Assim, ao aprovar uma NF, sua assinatura será aplicada automaticamente."
+    },
+    {
+      "input": "Como funciona valor para abrir ENG?",
+      "response": "Conforme mencionado:\n- <b>Até R$40.000:</b> 1 proposta\n- <b>De R$40.000,01 até R$150.000:</b> 2 propostas\n- <b>Acima de R$150.000,01:</b> 3 propostas\n*(Exceto para fornecedores com JT)*"
+    },
+    {
+      "input": "valor",
+      "response": "A regra para propostas é:\n- <b>Até R$40.000:</b> 1 proposta\n- <b>De R$40.000,01 até R$150.000:</b> 2 propostas\n- <b>Acima de R$150.000,01:</b> 3 propostas\n*(Exceto para fornecedores com JT)*"
+    },
+    {
+      "input": "Estou com duvida",
+      "response": "Claro! Sobre qual tema você precisa de ajuda?"
+    },
+    {
+      "input": "duvida",
+      "response": "Pode me dizer sobre o que é sua dúvida? Estou aqui para ajudar."
+    },
+    {
+      "input": "Obrigado",
+      "response": "De nada! Se tiver mais alguma dúvida, é só chamar."
+    }
+  ]
+  

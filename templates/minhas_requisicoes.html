@@ -1,0 +1,146 @@
+{% block content %}
+
+<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/minhas_requisicoes.css') }}">
+
+<div class="page-header">
+  <a href="{{ url_for('solicitante_dashboard') }}" class="btn-back">Voltar</a>
+  <h2>Minhas Requisições</h2>
+  <div class="search-container">
+    <input type="text" class="search-input" placeholder="Buscar requisições...">
+    <button class="btn-search">Buscar</button>
+  </div>
+</div>
+
+<div class="requisitions-container">
+  {% if requisicoes %}
+    <div class="table-header">
+      <span>Total de requisições encontradas: {{ requisicoes|length }}</span>
+    </div>
+    <table class="requisitions-table">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Descrição</th>
+          <th>Projeto</th>
+          <th>Valor</th>
+          <th>Data</th>
+          <th>Status</th>
+          <th>PR</th>
+          <th>Pedido</th>
+          <th>Anexos</th>
+          <th>Ações</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for req in requisicoes %}
+        <tr id="requisicao-{{ req.id }}">
+          <td>{{ req.id }}</td>
+          <td>{{ req.descricao }}</td>
+          <td>{{ req.projeto }}</td>
+          <td>{{ req.valor or '---' }}</td>
+          <td>{{ req.data_criacao.strftime('%d/%m/%Y %H:%M') }}</td>
+          <td>
+            {% if req.status == "Rejeitado" %}
+              Rejeitado
+            {% elif req.eng_aberta %}
+              Aberta em {{ req.data_eng_aberta.strftime('%d/%m/%Y %H:%M') }}
+            {% else %}
+              Pendente
+            {% endif %}
+          </td>
+          <td>{{ req.pr_number or '---' }}</td>
+          <td>
+            {% if req.pedidos and req.pedidos|length > 0 %}
+              {% for pedido in req.pedidos %}
+                {{ pedido.numero }}{% if not loop.last %}, {% endif %}
+              {% endfor %}
+            {% else %}
+              {% set prazo = prazos_dict.get(req.pr_number) %}
+              {% if prazo %}
+                Prazo: {{ prazo.strftime('%d/%m/%Y') }}
+              {% else %}
+                ---
+              {% endif %}
+            {% endif %}
+          </td>
+          <td>
+            {% if req.anexos %}
+              <ul class="anexos-list">
+                {% for anexo in req.anexos %}
+                  <li><a href="{{ url_for('download_attachment', anexo_id=anexo.id) }}">{{ anexo.filename }}</a></li>
+                {% endfor %}
+              </ul>
+            {% else %}
+              Nenhum
+            {% endif %}
+          </td>
+          <td class="actions-cell">
+            <!-- Botão de Detalhes: direciona para a nova rota de detalhes -->
+            <button class="btn-details" data-url="{{ url_for('detalhe_requisicao_solicitante', requisicao_id=req.id) }}">
+              Detalhes
+            </button>            
+            <button class="btn-delete" onclick="abrirConfirmacao('{{ req.id }}')">✖</button>
+            <button class="btn-change-attachment" data-url="{{ url_for('alterar_anexo', requisicao_id=req.id) }}">
+              <i class="fa fa-upload"></i> Alterar
+            </button>
+          </td>         
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  {% else %}
+    <p>Você ainda não abriu nenhuma requisição.</p>
+  {% endif %}
+</div>
+
+<!-- Modal de Confirmação -->
+<div id="confirm-modal" class="modal">
+    <div class="modal-content">
+      <span class="close" onclick="fecharConfirmacao()">&times;</span>
+      <h3>Confirmar Exclusão</h3>
+      <p>Tem certeza que deseja excluir esta requisição?</p>
+      <button class="btn-danger" id="confirm-delete">Excluir</button>
+      <button class="btn-cancel" id="btn-cancel" onclick="fecharConfirmacao()">Cancelar</button>
+    </div>
+</div>
+
+<script src="{{ url_for('static', filename='js/delete_requisicao.js') }}"></script>
+<script>
+  document.querySelectorAll('.btn-change-attachment').forEach(function(button) {
+    button.addEventListener('click', function() {
+      var url = this.getAttribute('data-url');
+      window.location.href = url;
+    });
+  });
+</script>
+<script>
+  document.addEventListener("DOMContentLoaded", function() {
+    const searchInput = document.querySelector('.search-input');
+    const searchButton = document.querySelector('.btn-search');
+    
+    function filterTable() {
+      const filter = searchInput.value.toLowerCase().trim();
+      const rows = document.querySelectorAll('.requisitions-table tbody tr');
+      
+      rows.forEach(row => {
+        // Índices: 1 = Descrição, 6 = PR, 7 = Pedido (baseado na estrutura da tabela)
+        const description = row.cells[1] ? row.cells[1].textContent.toLowerCase() : "";
+        const pr = row.cells[6] ? row.cells[6].textContent.toLowerCase() : "";
+        const pedido = row.cells[7] ? row.cells[7].textContent.toLowerCase() : "";
+        
+        if (description.includes(filter) || pr.includes(filter) || pedido.includes(filter)) {
+          row.style.display = "";
+        } else {
+          row.style.display = "none";
+        }
+      });
+    }
+    
+    // Atualiza a filtragem enquanto digita
+    searchInput.addEventListener("keyup", filterTable);
+    // Ou clica no botão de busca
+    searchButton.addEventListener("click", filterTable);
+  });
+</script>
+
+{% endblock %}

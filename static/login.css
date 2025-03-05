@@ -1,0 +1,135 @@
+/* Importando fontes modernas */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap');
+
+:root {
+    --azul-danone: #0078C9;
+    --azul-escuro: #004D80;
+    --branco: #FFFFFF;
+    --cinza-claro: #F5F5F5;
+    --cinza-escuro: #333333;
+}
+
+/* Reset de estilos */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Inter', sans-serif;
+}
+
+/* Estilizando o fundo */
+body {
+    background: linear-gradient(135deg, var(--azul-danone), var(--azul-escuro));
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Container do login */
+.login-container {
+    background: var(--branco);
+    padding: 40px;
+    border-radius: 15px;
+    box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.2);
+    width: 380px;
+    text-align: center;
+    animation: fadeIn 1s ease-in-out;
+}
+
+/* Animação de fade-in */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Logo */
+.logo {
+    width: 120px;
+    margin-bottom: 15px;
+    animation: bounce 1.5s infinite;
+}
+
+/* Animação da logo */
+@keyframes bounce {
+    0%, 100% {
+        transform: translateY(0);
+    }
+    50% {
+        transform: translateY(-5px);
+    }
+}
+
+/* Título do Login */
+h2 {
+    color: var(--azul-escuro);
+    margin-bottom: 10px;
+    font-weight: 600;
+}
+
+/* Campo de entrada */
+.input-group {
+    margin: 15px 0;
+    text-align: left;
+}
+
+.input-group label {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--cinza-escuro);
+}
+
+.input-group input {
+    width: 100%;
+    padding: 12px;
+    margin-top: 5px;
+    border: 1px solid var(--cinza-claro);
+    border-radius: 8px;
+    background: var(--cinza-claro);
+    transition: all 0.3s ease;
+}
+
+.input-group input:focus {
+    border-color: var(--azul-danone);
+    outline: none;
+    background: #ffffff;
+}
+
+/* Botão de login */
+button {
+    width: 100%;
+    padding: 12px;
+    border: none;
+    border-radius: 8px;
+    background: var(--azul-danone);
+    color: var(--branco);
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s ease-in-out;
+    margin-top: 10px;
+}
+
+button:hover {
+    background: var(--azul-escuro);
+}
+
+/* Link de Esqueci a Senha */
+.forgot-password {
+    display: block;
+    margin-top: 10px;
+    font-size: 14px;
+    color: var(--azul-danone);
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+.forgot-password:hover {
+    color: var(--azul-escuro);
+}

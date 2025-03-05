@@ -1,0 +1,179 @@
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+/* Container geral centralizado */
+.details-container {
+    max-width: 1000px;
+    margin: 20px auto;
+    padding: 20px;
+    font-family: 'Helvetica Neue', Arial, sans-serif;
+    text-align: left;
+}
+
+/* Título */
+.details-container h2 {
+    color: #0075C9;
+    margin-bottom: 20px;
+    font-size: 28px;
+    text-align: center;
+}
+
+/* Card principal */
+.card {
+    background: #fff;
+    border-radius: 8px;
+    padding: 20px;
+    box-shadow: 0 8px 16px rgba(0,0,0,0.15);
+    animation: fadeIn 0.5s ease-in-out;
+    max-height: 90vh;
+    overflow: hidden;
+}
+
+/* Seções do card */
+.card-section, .eng-section, .anexos-section {
+    margin-bottom: 15px;
+}
+
+/* Layout de duas colunas */
+.card-section {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+}
+
+.card-item {
+    flex: 1 1 45%;
+    margin-bottom: 10px;
+}
+
+/* Itens que devem ocupar a linha inteira */
+.card-item.full {
+    flex: 1 1 100%;
+}
+
+/* Labels e valores */
+.card-item .label {
+    font-weight: bold;
+    color: #0075C9;
+}
+
+.card-item .value {
+    margin-left: 5px;
+    color: #333;
+}
+
+/* Seção de ENG */
+.eng-section {
+    border-top: 1px solid #eee;
+    padding-top: 15px;
+}
+
+.eng-details .card-item {
+    flex: 1 1 100%;
+    margin-bottom: 8px;
+}
+
+/* Seção de Anexos */
+.anexos-section h3 {
+    color: #0075C9;
+    margin-bottom: 10px;
+    border-bottom: 2px solid #0075C9;
+    padding-bottom: 5px;
+}
+
+.anexos-list {
+    list-style: none;
+    padding: 0;
+    margin-top: 10px;
+}
+
+.anexos-list li {
+    margin-bottom: 5px;
+}
+
+.anexos-list li a {
+    color: #0075C9;
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+.anexos-list li a:hover {
+    color: #005fa3;
+}
+
+/* Botão ENG Aberta */
+.btn-eng {
+    display: inline-block;
+    background-color: #009E60;
+    color: #fff;
+    padding: 10px 15px;
+    border-radius: 4px;
+    text-decoration: none;
+    transition: background 0.3s ease;
+    margin-top: 10px;
+    margin-right: 10px;
+}
+
+.btn-eng:hover {
+    background-color: #007d4e;
+}
+
+/* Botão de rejeição */
+.btn-reject {
+    display: inline-block;
+    background-color: #d9534f;
+    color: #fff;
+    padding: 10px 15px;
+    border-radius: 4px;
+    text-decoration: none;
+    transition: background 0.3s ease;
+    margin-top: 10px;
+}
+
+.btn-reject:hover {
+    background-color: #c9302c;
+}
+
+/* Contêiner para os botões de ação */
+.action-buttons {
+    margin-top: 15px;
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+}
+
+/* Botão de voltar */
+.btn-back {
+    display: inline-block;
+    margin-top: 20px;
+    background-color: #666;
+    color: #fff;
+    padding: 10px 15px;
+    border-radius: 4px;
+    text-decoration: none;
+    transition: background 0.3s ease;
+}
+
+.btn-back:hover {
+    background-color: #444;
+}
+
+/* Animação de Fade In */
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* Responsividade */
+@media (max-width: 768px) {
+    .card-section {
+        flex-direction: column;
+    }
+    .card-item {
+        flex: 1 1 100%;
+    }
+}

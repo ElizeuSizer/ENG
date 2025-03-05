@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <title>Dashboard Requisitante</title>
+  <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/requisitante.css') }}">
+  <style>
+    /* Exemplo de estilos para o modal, ajuste conforme necessário */
+    .modal {
+      display: none; 
+      position: fixed; 
+      z-index: 1000;
+      left: 0; top: 0; 
+      width: 100%; height: 100%;
+      background: rgba(0,0,0,0.6);
+      backdrop-filter: blur(4px);
+      overflow-y: auto;
+    }
+    .modal-content {
+      background: #fff; 
+      margin: 5% auto; 
+      padding: 20px 25px;
+      border-radius: 10px; 
+      width: 90%; max-width: 500px;
+      position: relative;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+      animation: fadeIn 0.3s ease-in-out;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(-10%); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    .modal .close {
+      position: absolute; top: 15px; right: 15px;
+      font-size: 26px; font-weight: bold; color: #333;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+  <header class="dashboard-header">
+    <div class="header-left">
+      <img src="{{ url_for('static', filename='logo.png') }}" alt="Logo" class="logo">
+    </div>
+    <div class="header-center">
+      <h2>Bem-vindo(a), {{ user.username }}!</h2>
+    </div>
+    <div class="header-right">
+      <div class="profile-container">
+        <div class="profile-avatar" onclick="toggleDropdown()"></div>
+        <div id="dropdownMenu" class="dropdown-menu">
+          <a href="{{ url_for('logout') }}" class="dropdown-item">Sair</a>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <div class="dashboard-container">
+    <!-- Cartões de Status -->
+    <div class="status-cards">
+      <div class="card">
+        <h4>Requisições Pendentes</h4>
+        <p>{{ pendentes|length }}</p>
+      </div>
+      <div class="card">
+        <h4>Requisições Abertas</h4>
+        <p>{{ abertas|length }}</p>
+      </div>
+    </div>
+
+    <!-- Barra de Pesquisa -->
+    <div class="search-container">
+      <input type="text" id="search-bar" class="search-input" placeholder="Buscar por descrição, PR ou pedido..." onkeyup="filterRequisitions()">
+      <button class="btn-search" onclick="filterRequisitions()">Buscar</button>
+    </div>
+
+    <div class="dashboard-content">
+      <!-- Seção de Requisições Pendentes -->
+      <section class="requisitions-section">
+        <h3>Requisições Pendentes</h3>
+        {% if pendentes %}
+        <div class="requisition-grid" id="pendentes-list">
+          {% for req in pendentes %}
+          <div class="requisition-card">
+            <span class="req-id">ID: {{ req.id }}</span>
+            <p class="req-desc">{{ req.descricao }}</p>
+            <span class="req-valor">{{ req.valor or '---' }}</span>
+            <span class="req-data">{{ req.data_criacao.strftime('%d/%m/%Y') }}</span>
+            <span class="req-pr">{{ req.pr_number or '---' }}</span>
+            {% if req.pedidos and req.pedidos|length > 0 %}
+            <span class="req-pedido">
+              Pedidos:
+              {% for pedido in req.pedidos %}
+                {{ pedido.numero }}{% if not loop.last %}, {% endif %}
+              {% endfor %}
+            </span>
+            {% else %}
+            <span class="req-pedido">Sem pedido</span>
+            {% endif %}
+            <div class="req-actions">
+              <a href="{{ url_for('detalhe_requisicao', requisicao_id=req.id) }}" class="btn btn-primary">Detalhes</a>
+              <!-- Ao clicar, chama a função openModal passando o req.id -->
+
+            </div>
+          </div>
+          {% endfor %}
+        </div>
+        {% else %}
+        <p class="empty-message">Nenhuma requisição pendente.</p>
+        {% endif %}
+      </section>
+
+      <!-- Seção de Requisições Abertas -->
+      <section class="requisitions-section">
+        <h3>Requisições Abertas</h3>
+        <div class="requisition-grid" id="abertas-list">
+          <!-- Cabeçalho fixo -->
+          <div class="requisition-card header-row">
+            <span class="req-id">ID</span>
+            <span class="req-desc">Descrição</span>
+            <span class="req-valor">Valor</span>
+            <span class="req-data">Data</span>
+            <span class="req-pr">PR</span>
+            <span class="req-pedido">Pedido</span>
+            <div class="req-actions">Ações</div>
+          </div>
+          {% if abertas %}
+          {% for req in abertas %}
+          <div class="requisition-card">
+            <span class="req-id">ID: {{ req.id }}</span>
+            <p class="req-desc">{{ req.descricao }}</p>
+            <span class="req-valor">{{ req.valor or '---' }}</span>
+            <span class="req-data">{{ req.data_criacao.strftime('%d/%m/%Y') }}</span>
+            <span class="req-pr">{{ req.pr_number or '---' }}</span>
+            {% if req.pedidos and req.pedidos|length > 0 %}
+            <span class="req-pedido">
+          
+              {% for pedido in req.pedidos %}
+                {{ pedido.numero }}{% if not loop.last %}, {% endif %}
+              {% endfor %}
+            </span>
+            {% else %}
+            <span class="req-pedido">Sem pedido</span>
+            {% endif %}
+            <div class="req-actions">
+              <a href="{{ url_for('detalhe_requisicao', requisicao_id=req.id) }}" class="btn btn-primary">Detalhes</a>
+              <button class="btn btn-add" onclick="openModal('{{ req.id }}')">Pedido</button>
+              {% if req.pedidos and req.pedidos|length > 0 %}
+              <button class="btn btn-add" onclick="openNFModal('{{ req.id }}')">NF</button>
+              {% else %}
+              <button class="btn btn-add" disabled style="opacity: 0.4; cursor: not-allowed;">NF</button>
+              {% endif %}
+            </div>
+          </div>
+          {% endfor %}
+          {% else %}
+          <p class="empty-message">Nenhuma requisição aberta.</p>
+          {% endif %}
+        </div>
+      </section>
+    </div>
+  </div>
+
+  <!-- Modal de Pedido -->
+  <div id="modalPedido" class="modal">
+    <div class="modal-content modal-pedido">
+      <span class="close" onclick="closeModal()">&times;</span>
+      <h3>Adicionar Pedido</h3>
+      <form id="pedidoForm" action="{{ url_for('adicionar_pedido') }}" method="POST">
+        <!-- Campo oculto sem valor inicial; será preenchido via JavaScript -->
+        <input type="hidden" id="requisicao_id" name="requisicao_id" value="">
+        <label for="numero_pedido">Número do Pedido:</label>
+        <input type="text" id="numero_pedido" name="numero_pedido" required>
+        <button type="submit" class="btn btn-primary btn-small">Salvar</button>
+      </form>
+    </div>
+  </div>
+
+<!-- Modal de NF -->
+<div id="modalNF" class="modal">
+  <div class="modal-content modal-nf">
+    <span class="close" onclick="closeNFModal()">&times;</span>
+    <h3>Adicionar Nota Fiscal</h3>
+    <form id="nfForm" action="{{ url_for('adicionar_nf') }}" method="POST" enctype="multipart/form-data">
+      <input type="hidden" id="req_id_nf" name="req_id_nf">
+      
+      <!-- Novo campo para selecionar o pedido -->
+      <div class="form-group">
+        <label for="pedido_id">Selecione o Pedido:</label>
+        <select name="pedido_id" id="pedido_id" class="input-field">
+          <!-- As opções serão carregadas via JS -->
+        </select>
+      </div>
+      
+      <div class="form-group">
+        <label for="nf_valor">Valor da NF:</label>
+        <input type="text" id="nf_valor" name="nf_valor" class="input-field" required>
+      </div>
+      <div class="form-group file-group">
+        <label>Anexos:</label>
+        <div id="nf-file-inputs">
+          <input type="file" name="nf_attachments[]" class="file-upload">
+        </div>
+        <button type="button" class="btn-add-file" onclick="addNFFileInput()">Adicionar mais arquivos</button>
+      </div>
+      <div class="form-actions">
+        <button type="submit" class="btn-success btn-small">Salvar NF</button>
+      </div>
+    </form>
+      <hr class="modal-divider">
+      <h4>Lista de Notas Fiscais</h4>
+      <div id="nfList">
+        <div class="nf-item-row">
+          <span class="nf-filename">NF: Exemplo01</span>
+          <div class="nf-actions">
+            <a href="#" class="btn-download">Baixar</a>
+            <button class="btn-excluir">Excluir</button>
+          </div>
+        </div>
+        <div class="nf-item-row">
+          <span class="nf-filename">NF: Exemplo02</span>
+          <div class="nf-actions">
+            <a href="#" class="btn-download">Baixar</a>
+            <button class="btn-excluir">Excluir</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Função para abrir o modal de Pedido e setar o campo oculto com o ID da requisição
+    function openModal(reqId) {
+      document.getElementById('requisicao_id').value = reqId;
+      document.getElementById('modalPedido').style.display = 'block';
+    }
+    // Função para fechar o modal de Pedido
+    function closeModal() {
+      document.getElementById('modalPedido').style.display = 'none';
+    }
+    // Função para fechar o modal de NF
+    function closeNFModal() {
+      document.getElementById('modalNF').style.display = 'none';
+    }
+    // Exemplo de função para adicionar mais inputs de arquivo no modal de NF
+    function addNFFileInput() {
+      var container = document.getElementById('nf-file-inputs');
+      var input = document.createElement('input');
+      input.type = 'file';
+      input.name = 'nf_attachments[]';
+      input.className = 'file-upload';
+      container.appendChild(input);
+    }
+    // Função placeholder para o dropdown do perfil
+    function toggleDropdown() {
+      var menu = document.getElementById('dropdownMenu');
+      menu.style.display = (menu.style.display === 'block') ? 'none' : 'block';
+    }
+    // Função placeholder para filtrar requisições
+    function filterRequisitions() {
+      // Implemente a lógica de filtro conforme necessário
+    }
+  </script>
+  <script src="{{ url_for('static', filename='js/dashboard.js') }}"></script>
+</body>
+</html>

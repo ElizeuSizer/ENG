@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login | Danone</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='login.css') }}">
+</head>
+<body>
+
+    <div class="login-container">
+        <img src="{{ url_for('static', filename='logo.png') }}" alt="Logo Danone" class="logo">
+        <h2>Bem-vindo</h2>
+        <p>Faça login para acessar o sistema</p>
+
+        <form method="POST">
+            {{ form.hidden_tag() }}
+
+            <div class="input-group">
+                <label for="email">E-mail</label>
+                {{ form.email(id="email") }}
+            </div>
+
+            <div class="input-group">
+                <label for="password">Senha</label>
+                {{ form.password(id="password") }}
+            </div>
+
+            <button type="submit">Entrar</button>
+
+            <a href="#" class="forgot-password">Esqueceu a senha?</a>
+        </form>
+    </div>
+
+</body>
+</html>

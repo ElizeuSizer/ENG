@@ -1,0 +1,241 @@
+/* detalhe_requisicao_sol.css */
+
+/* Variáveis */
+:root {
+    --primary-color: #1e88e5;
+    --secondary-color: #e53935;
+    --neutral-color: #757575;
+    --background-color: #f5f5f5;
+    --white: #ffffff;
+    --gray-light: #f0f0f0;
+    --gray-medium: #e0e0e0;
+    --gray-dark: #333333;
+    --font-family: 'Roboto', sans-serif;
+    --base-font-size: 14px;
+  }
+  
+  /* Reset e Base */
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+  body {
+    font-family: var(--font-family);
+    background: var(--background-color);
+    font-size: var(--base-font-size);
+    color: var(--gray-dark);
+    padding: 10px;
+  }
+  
+  /* Container Principal */
+  .details-container {
+    max-width: 900px;
+    margin: 20px auto;
+    background: var(--white);
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    padding: 15px;
+  }
+  
+  /* Título */
+  .details-container h2 {
+    text-align: center;
+    font-size: 1.8rem;
+    margin-bottom: 15px;
+    color: var(--primary-color);
+  }
+  
+  /* Cartão de Informações */
+  .card {
+    border: 1px solid var(--gray-medium);
+    border-radius: 6px;
+    background: var(--gray-light);
+    margin-bottom: 10px;
+    overflow: hidden;
+  }
+  .card-section {
+    display: flex;
+    flex-wrap: wrap;
+    padding: 10px;
+    border-bottom: 1px solid var(--gray-medium);
+  }
+  .card-section:last-child {
+    border-bottom: none;
+  }
+  .card-item {
+    flex: 1 1 45%;
+    margin: 5px 2.5%;
+    display: flex;
+    flex-direction: column;
+  }
+  .card-item .label {
+    font-weight: 600;
+    font-size: 0.9rem;
+    margin-bottom: 3px;
+  }
+  .card-item .value {
+    font-size: 0.9rem;
+    background: var(--white);
+    padding: 5px;
+    border-radius: 4px;
+  }
+  .card-item .pedido-value {
+    font-size: 0.8rem;
+    color: var(--neutral-color);
+  }
+  
+  /* Seção ENG */
+  .eng-section {
+    background: #e8f5e9;
+    border-top: 2px solid #66bb6a;
+    padding: 10px;
+    margin: 10px 0;
+  }
+  
+  /* Botões de Ação (somente ENG Aberta) */
+  .action-buttons {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    padding: 10px 0;
+  }
+  .action-buttons a {
+    text-decoration: none;
+    font-weight: bold;
+    padding: 8px 16px;
+    border-radius: 4px;
+    font-size: 0.9rem;
+    transition: all 0.3s ease;
+    display: inline-block;
+  }
+  .btn-eng {
+    background: var(--primary-color);
+    color: var(--white);
+  }
+  .btn-eng:hover {
+    background: #1565c0;
+    transform: scale(1.03);
+  }
+  
+  /* Seção de Anexos */
+  .anexos-section {
+    padding: 10px;
+  }
+  .anexos-section h3 {
+    font-size: 1.2rem;
+    margin-bottom: 8px;
+    color: var(--primary-color);
+  }
+  .anexos-list {
+    list-style: none;
+    padding: 0;
+  }
+  .anexos-list li {
+    padding: 4px 0;
+  }
+  .anexos-list li a {
+    font-size: 0.9rem;
+    color: var(--primary-color);
+    text-decoration: none;
+  }
+  
+  /* Seção de Notas Fiscais */
+  .nfs-section {
+    background: var(--white);
+    border: 1px solid var(--gray-medium);
+    border-radius: 6px;
+    padding: 10px;
+    margin-top: 10px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+  }
+  .nfs-section h3 {
+    font-size: 1.3rem;
+    margin-bottom: 8px;
+    color: var(--primary-color);
+  }
+  .nfs-section h4 {
+    font-size: 1.1rem;
+    margin-bottom: 6px;
+    color: var(--secondary-color);
+  }
+  .nfs-list {
+    list-style: none;
+    padding: 0;
+  }
+  .nfs-list li {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    background: var(--white);
+    padding: 6px;
+    margin-bottom: 6px;
+    border-radius: 4px;
+    font-size: 0.9rem;
+    transition: box-shadow 0.3s ease;
+  }
+  
+  .nfs-list li:hover {
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  }
+  .btn-download {
+    background: var(--primary-color);
+    color: var(--white);
+    padding: 6px 12px;
+    border-radius: 4px;
+    text-decoration: none;
+    font-size: 0.8rem;
+    transition: background 0.3s ease;
+  }
+  .btn-download:hover {
+    background: #1565c0;
+  }
+  .btn-approve {
+    background: #4CAF50; /* Verde */
+    color: #fff;  
+    border: none;
+    padding: 6px 12px;
+    border-radius: 4px;
+    font-size: 0.8rem;
+    cursor: pointer;
+    transition: background 0.3s ease;
+  }
+  .btn-approve:hover {
+    background: #c62828;
+  }
+  
+  /* Botão Voltar */
+  .btn-back {
+    display: inline-block;
+    margin: 10px auto;
+    padding: 8px 20px;
+    background: var(--neutral-color);
+    color: var(--white);
+    text-decoration: none;
+    border-radius: 4px;
+    font-weight: bold;
+    font-size: 0.9rem;
+    transition: background 0.3s ease, transform 0.3s ease;
+    max-width: 180px;
+    text-align: center;
+  }
+  .btn-back:hover {
+    background: #616161;
+    transform: scale(1.03);
+  }
+  
+  /* Responsividade */
+  @media (max-width: 768px) {
+    .card-item {
+      flex: 1 1 100%;
+      margin: 5px 0;
+    }
+  }
+  .nf-actions {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+  }
+  
+  

@@ -1,0 +1,205 @@
+{% block content %}
+  <!-- CSS Principal -->
+  <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/detalhe_requisicao_sol.css') }}">
+
+<div class="details-container">
+  <h2>Detalhes da Requisição</h2>
+  
+  <div class="card">
+    <!-- Primeira Seção: Informações Básicas -->
+    <div class="card-section">
+      <div class="card-item">
+        <span class="label">ID:</span>
+        <span class="value">{{ requisicao.id }}</span>
+      </div>
+      <div class="card-item">
+        <span class="label">Descrição:</span>
+        <span class="value">{{ requisicao.descricao }}</span>
+      </div>
+      <div class="card-item">
+        <span class="label">Solicitante:</span>
+        <span class="value">{{ requisicao.solicitante.username }}</span>
+      </div>
+      <div class="card-item">
+        <span class="label">Planta:</span>
+        <span class="value">{{ requisicao.planta }}</span>
+      </div>
+    </div>
+    
+    <!-- Segunda Seção: Projeto, Local e (Pedidos se ENG não estiver aberta) -->
+    <div class="card-section">
+      <div class="card-item">
+        <span class="label">Projeto:</span>
+        <span class="value">{{ requisicao.projeto }}</span>
+      </div>
+      <div class="card-item">
+        <span class="label">Pertence ao Processo?</span>
+        <span class="value">{{ requisicao.pertence_processo_produtivo }}</span>
+      </div>
+      <div class="card-item">
+        <span class="label">Local da Fábrica:</span>
+        <span class="value">{{ requisicao.local_fabrica }}</span>
+      </div>
+      <div class="card-item">
+        <span class="label">Local Específico:</span>
+        <span class="value">{{ requisicao.local_especifico }}</span>
+      </div>
+      {% if not requisicao.eng_aberta %}
+      <div class="card-item">
+        <span class="label">Pedidos:</span>
+        <span class="value">
+          {% if requisicao.pedidos and requisicao.pedidos|length > 0 %}
+            {% for pedido in requisicao.pedidos %}
+              {{ pedido.numero }}{% if not loop.last %}, {% endif %}
+            {% endfor %}
+          {% else %}
+            ---
+          {% endif %}
+        </span>
+      </div>
+      {% endif %}
+    </div>
+    
+    <!-- Terceira Seção: Aplicabilidade, Valor e Data -->
+    <div class="card-section">
+      <div class="card-item">
+        <span class="label">Aplicabilidade:</span>
+        <span class="value">{{ requisicao.aplicabilidade }}</span>
+      </div>
+      <div class="card-item">
+        <span class="label">Valor:</span>
+        <span class="value">{{ requisicao.valor }}</span>
+      </div>
+      <div class="card-item">
+        <span class="label">Data de Criação:</span>
+        <span class="value">{{ requisicao.data_criacao.strftime('%d/%m/%Y %H:%M') }}</span>
+      </div>
+    </div>
+    
+    <!-- Seção ENG (se aberta) e Pedidos integrados -->
+    {% if requisicao.eng_aberta %}
+    <div class="eng-section">
+      <div class="card-item">
+        <span class="label">ENG registrada em:</span>
+        <span class="value">{{ requisicao.data_eng_aberta.strftime('%d/%m/%Y %H:%M') }}</span>
+      </div>
+      <div class="card-item">
+        <span class="label">Observação:</span>
+        <span class="value">{{ requisicao.eng_observacao }}</span>
+      </div>
+      <div class="card-item">
+        <span class="label">Número da PR:</span>
+        <span class="value">{{ requisicao.pr_number }}</span>
+      </div>
+      <div class="card-item">
+        <span class="label">Pedidos:</span>
+        <span class="value">
+          {% if requisicao.pedidos and requisicao.pedidos|length > 0 %}
+            {% for pedido in requisicao.pedidos %}
+              {{ pedido.numero }}{% if not loop.last %}, {% endif %}
+            {% endfor %}
+          {% else %}
+            ---
+          {% endif %}
+        </span>
+      </div>
+    </div>
+    {% endif %}
+  </div>
+  
+  <!-- Contêiner de Botões de Ação (somente ENG Aberta) -->
+  <div class="action-buttons">
+    {% if not requisicao.eng_aberta and requisicao.status != "Rejeitado" %}
+      <a href="{{ url_for('eng_aberta', requisicao_id=requisicao.id) }}" class="btn-eng">ENG Aberta</a>
+    {% endif %}
+  </div>
+  
+  <!-- Seção de Anexos -->
+  <div class="anexos-section">
+    <h3>Anexos</h3>
+    {% if requisicao.anexos %}
+      <ul class="anexos-list">
+        {% for anexo in requisicao.anexos %}
+          <li><a href="{{ url_for('download_attachment', anexo_id=anexo.id) }}">{{ anexo.filename }}</a></li>
+        {% endfor %}
+      </ul>
+    {% else %}
+      <p>Nenhum anexo encontrado.</p>
+    {% endif %}
+  </div>
+  
+  <!-- Seção de Notas Fiscais -->
+  <div class="nfs-section">
+    <h3>Notas Fiscais</h3>
+    <div class="nfs-aprovadas">
+      <h4>NF Aprovadas</h4>
+      {% if nfs_aprovadas %}
+        <ul class="nfs-list">
+          {% for nf in nfs_aprovadas %}
+            <li>
+              <span class="nf-numero">{{ nf.numero }}</span> - 
+              <span class="nf-valor">{{ nf.valor }}</span>
+              <a href="{{ url_for('download_nf', nf_id=nf.id) }}" class="btn-download">Baixar NF</a>
+            </li>
+          {% endfor %}
+        </ul>
+      {% else %}
+        <p>Nenhuma NF aprovada.</p>
+      {% endif %}
+    </div>
+    <div class="nfs-nao-aprovadas">
+      <h4>NF para Aprovação</h4>
+      {% if nfs_nao_aprovadas %}
+        <ul class="nfs-list">
+            {% for nf in nfs_nao_aprovadas %}
+            <li>
+                <span class="nf-numero">{{ nf.numero }}</span> - 
+                <span class="nf-valor">{{ nf.valor }}</span>
+                <div class="nf-actions">
+                  <a href="{{ url_for('download_nf', nf_id=nf.id) }}" class="btn-download">Baixar NF</a>
+                  <button class="btn-approve" data-nf-id="{{ nf.id }}" data-requisicao-id="{{ requisicao.id }}">Aprovar</button>
+                </div>
+              </li>
+              
+          {% endfor %}
+          
+        </ul>
+      {% else %}
+        <p>Nenhuma NF para aprovação.</p>
+      {% endif %}
+    </div>
+  </div>
+  
+  <!-- Botão Voltar -->
+  <a href="{{ url_for('minhas_requisicoes') }}" class="btn-back">Voltar</a>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function(){
+  document.querySelectorAll('.btn-approve').forEach(function(btn){
+    btn.addEventListener('click', function(){
+      var nfId = this.getAttribute('data-nf-id');
+      var reqId = this.getAttribute('data-requisicao-id');
+      if(confirm("Deseja realmente aprovar esta NF? Ela será atualizada com sua assinatura e data.")){
+        fetch("/aprovar_nf/" + nfId, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            "X-CSRFToken": "{{ csrf_token }}"
+          },
+          body: JSON.stringify({ requisicao_id: reqId })
+        })
+        .then(response => response.json())
+        .then(data => {
+          alert(data.message);
+          if(data.success){
+            window.location.reload();
+          }
+        })
+        .catch(error => console.error("Erro:", error));
+      }
+    });
+  });
+});
+</script>
+{% endblock %}

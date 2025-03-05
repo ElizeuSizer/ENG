@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>Painel do Administrador</h2>
+<p>Bem-vindo, {{ current_user.username }}! Aqui você pode gerenciar usuários.</p>
+
+<!-- Formulário para cadastrar novos usuários -->
+<h3>Cadastrar Novo Usuário</h3>
+<form method="POST">
+    {{ form.hidden_tag() }}
+    <label>{{ form.username.label }}</label> {{ form.username() }} <br>
+    <label>{{ form.email.label }}</label> {{ form.email() }} <br>
+    <label>{{ form.password.label }}</label> {{ form.password() }} <br>
+    <label>{{ form.confirm_password.label }}</label> {{ form.confirm_password() }} <br>
+    <label>{{ form.perfil.label }}</label> {{ form.perfil() }} <br>  <!-- Campo de seleção de perfil -->
+    <button type="submit">Cadastrar</button>
+</form>
+
+<!-- Lista de usuários -->
+<h3>Usuários Cadastrados</h3>
+<table border="1">
+    <tr>
+        <th>ID</th>
+        <th>Nome</th>
+        <th>Email</th>
+        <th>Perfil</th>
+        <th>Ações</th>
+    </tr>
+    {% for user in users %}
+    <tr>
+        <td>{{ user.id }}</td>
+        <td>{{ user.username }}</td>
+        <td>{{ user.email }}</td>
+        <td>{{ user.perfil }}</td>  <!-- Exibir o perfil do usuário -->
+        <td>
+            {% if user.email != "admdanone@gmail.com" %} 
+                <form method="POST" action="{{ url_for('delete_user', user_id=user.id) }}">
+                    <button type="submit" onclick="return confirm('Tem certeza que deseja excluir {{ user.username }}?');">Excluir</button>
+                </form>
+            {% else %}
+                <strong>Admin</strong>
+            {% endif %}
+        </td>
+    </tr>
+    {% endfor %}
+</table>
+
+<a href="{{ url_for('dashboard') }}">Voltar para o Painel</a>
+{% endblock %}

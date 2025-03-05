@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Chatbot Engenharia - Danone Style</title>
+  <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/chat.css') }}">
+</head>
+<body>
+  <div id="chatbox">
+    <header>
+      <img src="{{ url_for('static', filename='logo.png') }}" alt="Danone Logo">
+      <h1>Suporte Engenharia</h1>
+    </header>
+    <div id="messages"></div>
+    <form id="chat-form">
+      <input type="text" name="message" id="message-input" placeholder="Digite sua pergunta..." required>
+      <button type="submit">Enviar</button>
+    </form>
+    <div style="text-align: center;">
+      <a href="{{ url_for('solicitante_dashboard') }}" class="btn-secondary">Voltar</a>
+    </div>
+  </div>
+
+  <script>
+    const form = document.getElementById('chat-form');
+    const messagesDiv = document.getElementById('messages');
+    form.addEventListener('submit', function(e) {
+      e.preventDefault();
+      const messageInput = document.getElementById('message-input');
+      const userMessage = messageInput.value;
+      
+      // Exibe a mensagem do usuário
+      const userDiv = document.createElement('div');
+      userDiv.classList.add('message', 'user');
+      userDiv.textContent = userMessage;
+      messagesDiv.appendChild(userDiv);
+      messageInput.value = '';
+      messagesDiv.scrollTop = messagesDiv.scrollHeight;
+
+      // Envia a mensagem para o endpoint /chat
+      fetch('/chat', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+        body: 'message=' + encodeURIComponent(userMessage)
+      })
+      .then(response => response.json())
+      .then(data => {
+        const botDiv = document.createElement('div');
+        botDiv.classList.add('message', 'bot');
+        botDiv.innerHTML = data.answer.replace(/\n/g, "<br>");
+        messagesDiv.appendChild(botDiv);
+        messagesDiv.scrollTop = messagesDiv.scrollHeight;
+      });
+    });
+  </script>
+</body>
+</html>
